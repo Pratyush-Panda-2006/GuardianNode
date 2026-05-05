@@ -1,0 +1,9 @@
+streamlit
+google-genai
+streamlit-lottie
+requests
+<<<<<<< HEAD
+=======
+streamlit-audiorecorder
+gTTS
+>>>>>>> 0e7325d (implementing the Voice feature)
