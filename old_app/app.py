@@ -17,7 +17,6 @@ st.set_page_config(
 
 <<<<<<< HEAD
 =======
-# --- ASSETS & CSS ---
 >>>>>>> 0e7325d (implementing the Voice feature)
 def load_lottieurl(url: str):
     try:
