@@ -11,17 +11,16 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Prompt is required.' }, { status: 400 });
     }
 
-    const requestBody: any = {
-      contents: [{ role: 'user', parts: [{ text: prompt }] }],
-    };
-
+    let finalPrompt = prompt;
     if (systemInstruction) {
-      requestBody.system_instruction = {
-        parts: [{ text: systemInstruction }]
-      };
+      finalPrompt = `System Instruction: ${systemInstruction}\n\nTask: ${prompt}`;
     }
 
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+    const requestBody: any = {
+      contents: [{ role: 'user', parts: [{ text: finalPrompt }] }],
+    };
+
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent?key=${apiKey}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
