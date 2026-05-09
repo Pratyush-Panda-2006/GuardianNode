@@ -110,7 +110,8 @@ export default function Home() {
       setAnalysisResult({ status, text: text.replace(/^(SAFE|WARNING|DANGER):\s*/, '') });
     } catch (error) {
       console.error(error);
-      setAnalysisResult({ status: 'warning', text: 'Failed to analyze. Please check your API key.' });
+      const errorMessage = error instanceof Error ? error.message : 'Failed to analyze. Please check your API key.';
+      setAnalysisResult({ status: 'warning', text: errorMessage });
     } finally {
       setIsAnalyzing(false);
     }
@@ -145,7 +146,7 @@ export default function Home() {
       speakText(replyText);
     } catch (error) {
       console.error(error);
-      const errText = "I encountered an error connecting to the intelligence server. Please check your API key.";
+      const errText = error instanceof Error ? error.message : "I encountered an error connecting to the intelligence server. Please check your API key.";
       setVoiceMessages([...newMessages, { role: 'ai', content: errText }]);
       speakText(errText);
     }

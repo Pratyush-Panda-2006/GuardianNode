@@ -16,7 +16,7 @@ export async function POST(req: Request) {
     };
 
     if (systemInstruction) {
-      requestBody.systemInstruction = {
+      requestBody.system_instruction = {
         parts: [{ text: systemInstruction }]
       };
     }
@@ -35,7 +35,15 @@ export async function POST(req: Request) {
     }
 
     const data = await response.json();
-    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+    const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+
+    if (!text) {
+      const finishReason = data.candidates?.[0]?.finishReason;
+      if (finishReason) {
+        return NextResponse.json({ error: `Request blocked or failed. Reason: ${finishReason}` }, { status: 400 });
+      }
+      return NextResponse.json({ error: 'Failed to generate a valid response from the API.' }, { status: 500 });
+    }
 
     return NextResponse.json({ text });
   } catch (error: any) {
